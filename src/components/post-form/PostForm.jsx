@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
 function PostForm({ post }) {
-  console.log("post form recieved ->", post);
+  // console.log("post form recieved ->", post);
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
 
@@ -21,10 +21,10 @@ function PostForm({ post }) {
     });
 
   const submit = async (data) => {
-    console.log("Blog post action triggered!");
+    // console.log("Blog post action triggered!");
     if (post) {
       const file = data.image[0]
-        ? appwriteService.uploadFile(data.image[0])
+        ? await appwriteService.uploadFile(data.image[0])
         : null;
 
       if (file) {
@@ -111,13 +111,9 @@ function PostForm({ post }) {
           accept="image/png, image/jpg, image/jpeg, image/gif"
           {...register("image", { required: !post })}
         />
-        {post && (
+        {post && post.featuredImage && (
           <div className="w-full mb-4">
-            <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
-              alt={post.title}
-              className="rounded-lg"
-            />
+            <img src={appwriteService.getFileView(post.featuredImage)} alt={post.title} className="rounded-lg" />
           </div>
         )}
         <Select

@@ -101,6 +101,9 @@ export class Service {
                 bucketId: conf.appwriteBucketId,
                 fileId: ID.unique(),
                 file: file,
+                permissions: [
+                    'read("any")',
+                ],
             });
         } catch (error) {
             console.error("Appwrite serive :: uploadFile :: error", error);
@@ -121,8 +124,8 @@ export class Service {
         }
     }
 
-    async getFilePreview(fileId) {
-        // this method required paid version
+    getFilePreview(fileId) {
+        if (!fileId) return "";
         try {
             return this.storage.getFilePreview({
                 bucketId: conf.appwriteBucketId,
@@ -134,7 +137,8 @@ export class Service {
         }
     }
 
-    async getFileView(fileId) {
+    getFileView(fileId) {
+        if (!fileId) return "";
         try {
             return this.storage.getFileView({
                 bucketId: conf.appwriteBucketId,
